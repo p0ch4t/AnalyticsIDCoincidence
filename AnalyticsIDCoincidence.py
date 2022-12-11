@@ -1,4 +1,3 @@
-import urllib.request
 import requests
 import re
 import urllib3
@@ -8,8 +7,8 @@ urllib3.disable_warnings()
 def get_UA(link):
     pattern = "UA-\d+-\d+"
     try:
-        u = urllib.request.urlopen(link)
-        data = u.read().decode(errors="ignore")
+        u = requests.get(link, verify=False, timeout=5)
+        data = u.text
         match = re.findall(pattern, data)
         unique = set()
         unique = unique.union(match)
@@ -27,7 +26,7 @@ def get_googletagmanager(url):
                     headers={
                         'User-agent': 'Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.86 Mobile Safari/537.36'
                         }, 
-                    verify=False)
+                    verify=False, timeout=5)
 
         if response.status_code == 200:
             text = response.text
@@ -53,8 +52,8 @@ def get_domains_from_builtwith(id):
     pattern = "/relationships/[a-z0-9\-\_\.]+\.[a-z]+"
     url = f"https://builtwith.com/relationships/tag/{id}"
     try:
-        u = urllib.request.urlopen(url)
-        data = u.read().decode(errors="ignore")
+        u = requests.get(url, verify=False, timeout=5)
+        data = u.text
         return clean_relationships(re.findall(pattern, data))
     except:
         pass
@@ -63,7 +62,7 @@ def get_domains_from_builtwith(id):
 def get_domains_from_hackertarget(id):
     url = f"https://api.hackertarget.com/analyticslookup/?q={id}"
     try:
-        response = requests.get(url)
+        response = requests.get(url, verify=False, timeout=5)
         if response.status_code == 200 and "API count exceeded" not in response.text: 
             return response.text.split("\n")
     except:
