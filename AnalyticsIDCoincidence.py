@@ -1,4 +1,3 @@
-import urllib.request
 import requests
 import re
 import urllib3
@@ -8,7 +7,7 @@ urllib3.disable_warnings()
 def get_UA(link):
     pattern = "UA-\d+-\d+"
     try:
-        u = requests.get(link)
+        u = requests.get(link, verify=False)
         data = u.text
         match = re.findall(pattern, data)
         unique = set()
@@ -53,8 +52,8 @@ def get_domains_from_builtwith(id):
     pattern = "/relationships/[a-z0-9\-\_\.]+\.[a-z]+"
     url = f"https://builtwith.com/relationships/tag/{id}"
     try:
-        u = urllib.request.urlopen(url)
-        data = u.read().decode(errors="ignore")
+        u = requests.get(url, verify=False)
+        data = u.text
         return clean_relationships(re.findall(pattern, data))
     except:
         pass
