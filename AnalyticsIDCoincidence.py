@@ -110,4 +110,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     url =  args.url
     lista_dominios = findomainsbyanalyticsid(url)
-    print("\n".join(lista_dominios))
+    if lista_dominios:
+        print("\n".join(lista_dominios))
