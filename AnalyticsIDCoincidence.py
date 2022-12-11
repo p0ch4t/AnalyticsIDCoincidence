@@ -52,8 +52,9 @@ def get_domains_from_builtwith(id):
     pattern = "/relationships/[a-z0-9\-\_\.]+\.[a-z]+"
     url = f"https://builtwith.com/relationships/tag/{id}"
     try:
-        u = requests.get(url, verify=False, timeout=5)
-        data = u.text
+        response = requests.get(url, verify=False, timeout=5)
+        if response.status_code == 200 and "API count exceeded" not in response.text: 
+        data = response.text
         return clean_relationships(re.findall(pattern, data))
     except:
         pass
