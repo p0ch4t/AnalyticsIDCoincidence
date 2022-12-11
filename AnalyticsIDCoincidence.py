@@ -8,8 +8,8 @@ urllib3.disable_warnings()
 def get_UA(link):
     pattern = "UA-\d+-\d+"
     try:
-        u = urllib.request.urlopen(link)
-        data = u.read().decode(errors="ignore")
+        u = requests.get(link)
+        data = u.text
         match = re.findall(pattern, data)
         unique = set()
         unique = unique.union(match)
