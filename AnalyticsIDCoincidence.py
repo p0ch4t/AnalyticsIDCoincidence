@@ -83,12 +83,13 @@ def show_data(data):
             analytics_id = u.split('-')
             analytics_id = "-".join(analytics_id[0:2])
             if analytics_id not in all_uas:
+                if analytics_id == 'error getting results':
+                    continue                
                 all_uas.append(analytics_id)
                 domains = get_domains(analytics_id)
                 if domains:
                     domains = get_domains(analytics_id)
                     domains = list(set(domains))
-                    domains.remove('error getting results')
                     return domains
 
 def findomainsbyanalyticsid(url):
