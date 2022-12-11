@@ -22,12 +22,8 @@ def get_googletagmanager(url):
     pattern2 = "GTM-[A-Z0-9]+"
     pattern3 = "UA-\d+-\d+"
     try:
-        response = requests.get(url, 
-                    headers={
-                        'User-agent': 'Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.86 Mobile Safari/537.36'
-                        }, 
-                    verify=False, timeout=5)
-
+        headers = {'User-agent': 'Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.86 Mobile Safari/537.36'}
+        response = requests.get(url, headers=headers, verify=False, timeout=5)
         if response.status_code == 200:
             text = response.text
             match = re.findall(pattern, text)
@@ -82,9 +78,7 @@ def show_data(data):
         for u in data:
             analytics_id = u.split('-')
             analytics_id = "-".join(analytics_id[0:2])
-            if analytics_id not in all_uas:
-                if analytics_id == 'error getting results':
-                    continue                
+            if analytics_id not in all_uas:                
                 all_uas.append(analytics_id)
                 domains = get_domains(analytics_id)
                 if domains:
