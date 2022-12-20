@@ -50,8 +50,8 @@ def get_domains_from_builtwith(id):
     try:
         response = requests.get(url, verify=False, timeout=5)
         if response.status_code == 200 and "API count exceeded" not in response.text: 
-        data = response.text
-        return clean_relationships(re.findall(pattern, data))
+            data = response.text
+            return clean_relationships(re.findall(pattern, data))
     except:
         pass
     return []
